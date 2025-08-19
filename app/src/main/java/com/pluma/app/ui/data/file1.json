@@ -1,0 +1,41 @@
+{
+  "title": "The First-Person Narrator",
+  "what": [
+    {
+      "part": "Definition",
+      "text": "A narrator who tells the story from their own point of view using the first grammatical person."
+    },
+    {
+      "part": "Characteristics",
+      "text": "It provides subjectivity, emotional closeness, and limits the information to what the narrator knows or perceives."
+    }
+  ],
+  "why": "It allows for a more direct connection with the reader, conveys emotions, and creates an intimate perspective.",
+  "how": {
+    "tips": [
+      "Decide if the narrator is the protagonist or a witness.",
+      "Avoid overusing 'I' to not sound repetitive.",
+      "Play with the narrator's reliability."
+    ],
+    "exercises": [
+      "Write an everyday scene (going to the supermarket, taking the subway) from the point of view of a first-person narrator.",
+      "Rewrite that same scene in the third person and compare the effect."
+    ]
+  },
+  "examples": [
+    {
+      "description": "Novel excerpt",
+      "text": "‘I will never forget the first time I saw the city…'"
+    }
+  ],
+  "recommended_readings": [
+    {
+      "title": "The Catcher in the Rye",
+      "author": "J.D. Salinger"
+    },
+    {
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee"
+    }
+  ]
+}
