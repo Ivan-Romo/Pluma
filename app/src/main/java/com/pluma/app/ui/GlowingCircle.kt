@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pluma.app.RalewayFamily
 
 @Composable
 fun GlowingCircleLesson(
@@ -42,10 +44,12 @@ fun GlowingCircleLesson(
 
     val density = LocalDensity.current
     val textGlowPx = with(density) { 18.dp.toPx() }
-    val nameGlowPx = with(density) { 24.dp.toPx() }
+    val nameGlowPx = with(density) { 1.dp.toPx() }
 
     Box(
-        modifier = modifier.fillMaxSize().padding(top = 20.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 20.dp),
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -55,26 +59,6 @@ fun GlowingCircleLesson(
                     val r = this.size.minDimension / 2f
                     val c = center
 
-                    // Vignette exterior
-//                    drawCircle(
-//                        brush = Brush.radialGradient(
-//                            colors = listOf(Color.Transparent, BackgroundColor),
-//                            center = c, radius = r * 1.25f
-//                        ),
-//                        radius = r * 1.25f, center = c
-//                    )
-
-                    // Disco base
-                  //  drawCircle(color = diskDark, radius = r * 0.995f, center = c)
-
-//                    // Profundidad interior
-//                    drawCircle(
-//                        brush = Brush.radialGradient(
-//                            colors = listOf(Color(0xFF2B1410), diskDark),
-//                            center = c, radius = r * 0.98f
-//                        ),
-//                        radius = r * 0.98f, center = c
-//                    )
 
                     // HALO ANULAR (usar pares Float–Color)
                     drawCircle(
@@ -90,23 +74,6 @@ fun GlowingCircleLesson(
                         radius = r, center = c, blendMode = BlendMode.Plus
                     )
 
-//                    // Glow interior para el texto
-//                    drawCircle(
-//                        brush = Brush.radialGradient(
-//                            colors = listOf(neonSoft.copy(alpha = 0.16f), Color.Transparent),
-//                            center = c, radius = r * 0.36f
-//                        ),
-//                        radius = r * 0.36f, center = c, blendMode = BlendMode.Plus
-//                    )
-
-                    // Aura exterior
-//                    drawCircle(
-//                        brush = Brush.radialGradient(
-//                            colors = listOf(neon.copy(alpha = 0.12f), Color.Transparent),
-//                            center = c, radius = r * 1.35f
-//                        ),
-//                        radius = r * 1.35f, center = c, blendMode = BlendMode.Plus
-//                    )
                 }
         )
 
@@ -116,6 +83,8 @@ fun GlowingCircleLesson(
                 color = Color(0xFFEFCFB9),
                 fontSize = 18.sp,
                 letterSpacing = 0.2.sp,
+                fontFamily = RalewayFamily,
+                fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge.copy(
                     shadow = Shadow(
                         color = neon.copy(alpha = 0.35f),
@@ -134,7 +103,7 @@ fun GlowingCircleLesson(
                         renderEffect = AndroidRenderEffect
                             .createBlurEffect(22f, 22f, Shader.TileMode.DECAL)
                             .asComposeRenderEffect()
-                        alpha = 0.9f
+                        alpha = 0.5f
                     }
                 } else Modifier
 
@@ -143,12 +112,13 @@ fun GlowingCircleLesson(
                 Text(
                     text = name,
                     color = neon,
-                    fontSize = 30.sp,
+                    fontSize = 22.sp,
+                    fontFamily = RalewayFamily,
                     fontWeight = FontWeight.Bold,
                     modifier = blurLayer,
                     style = MaterialTheme.typography.titleLarge.copy(
                         shadow = Shadow(
-                            color = neon.copy(alpha = 0.9f),
+                            color = Primary.copy(alpha = 0.01f),
                             offset = Offset.Zero,
                             blurRadius = nameGlowPx
                         )
@@ -156,30 +126,47 @@ fun GlowingCircleLesson(
                 )
                 Text(
                     text = name,
-                    color = Color(0xFFFFE3D4),
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                    fontFamily = RalewayFamily,
+                    fontWeight = FontWeight.Bold,
+                    color = Primary,
+                    fontSize = 22.sp,
+
+                    )
+
+
             }
 
             Spacer(Modifier.height(18.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier.size(22.dp).background(neon, CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Timer,
-                        contentDescription = null,
-                        tint = Color(0xFF2A120E),
-                        modifier = Modifier.size(14.dp)
-                    )
-                }
+
+                Icon(
+                    imageVector = Icons.Outlined.Timer,
+                    contentDescription = null,
+                    tint = Primary,
+                    modifier = Modifier.size(14.dp)
+                )
+
                 Spacer(Modifier.width(8.dp))
+
+
                 Text(
-                    text = "Next in: $nextIn",
-                    color = neon,
+                    text = "Next in: ",
+                    color = InsideCardColor,
+                    fontFamily = RalewayFamily,
+                    fontSize = 15.sp,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        shadow = Shadow(
+                            color = neon.copy(alpha = 0.45f),
+                            offset = Offset.Zero,
+                            blurRadius = textGlowPx
+                        )
+                    )
+                )
+                Text(
+                    text = "$nextIn ",
+                    color = Primary,
+                    fontFamily = RalewayFamily,
                     fontSize = 15.sp,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         shadow = Shadow(
