@@ -11,20 +11,25 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import androidx.compose.ui.unit.sp
+import com.pluma.app.ui.GlowingCircleLesson
+import com.pluma.app.ui.HeaderInfo
+import com.pluma.app.ui.Lesson
+import com.pluma.app.ui.LessonView
+import com.pluma.app.ui.theme.BackgroundColor
+import com.pluma.app.ui.theme.InsideCardColor
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
@@ -61,8 +66,11 @@ fun LessonApp() {
     val maxHeight = 120.dp
     val topBarHeight = lerp(minHeight, maxHeight, progress)
 
-    // Mostrar "¿Qué tal?" solo si hemos llegado al snapIndex
     val showTopBarDetails = scrollState.value >= snapTarget.toInt()
+
+
+
+    val lesson : Lesson = Lesson.fromAsset(LocalContext.current,"file1.json")
 
     // Snap connection
     val snapConnection = remember {
@@ -93,7 +101,12 @@ fun LessonApp() {
                             Text("¿Qué tal?")
                         }
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = BackgroundColor,
+                    titleContentColor = InsideCardColor
+                )
+
             )
         }
     ) { padding ->
@@ -103,23 +116,24 @@ fun LessonApp() {
                 .fillMaxSize()
                 .nestedScroll(snapConnection)
                 .verticalScroll(scrollState)
+                .background(BackgroundColor)
         ) {
-            itemHeights.forEachIndexed { index, height ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(height)
-                        .background(if (index == snapIndex) Color.Red else Color.Gray),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Elemento $index (${height.value.toInt()}dp)",
-                        fontSize = 22.sp,
-                        textAlign = TextAlign.Center,
-                        color = Color.White
-                    )
-                }
-            }
+            //HeaderInfo("Iván")
+
+            GlowingCircleLesson("Iván", "23:59", circleSize = 380.dp)
+
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
+            LessonView(lesson)
         }
     }
 }
