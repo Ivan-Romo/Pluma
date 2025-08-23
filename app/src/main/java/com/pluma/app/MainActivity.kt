@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -21,13 +22,16 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
+import androidx.compose.ui.unit.sp
 import com.pluma.app.ui.GlowingCircleLesson
 import com.pluma.app.ui.HeaderInfo
 import com.pluma.app.ui.Lesson
 import com.pluma.app.ui.LessonView
+import com.pluma.app.ui.PlumaCardView
 import com.pluma.app.ui.theme.BackgroundColor
 import com.pluma.app.ui.theme.InsideCardColor
 import kotlinx.coroutines.launch
@@ -47,7 +51,7 @@ fun LessonApp() {
     val coroutineScope = rememberCoroutineScope()
 
     // Alturas variables
-    val itemHeights = listOf(150.dp, 300.dp, 180.dp, 250.dp, 220.dp, 400.dp, 120.dp, 260.dp, 200.dp, 280.dp)
+    val itemHeights = listOf(410.dp, 300.dp, 180.dp, 250.dp, 220.dp, 400.dp, 120.dp, 260.dp, 200.dp, 280.dp)
     val density = LocalDensity.current
     val itemHeightsPx = itemHeights.map { with(density) { it.toPx() } }
 
@@ -77,7 +81,7 @@ fun LessonApp() {
         object : NestedScrollConnection {
             override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
                 val currentOffset = scrollState.value.toFloat()
-                val snapThreshold = itemHeightsPx[snapIndex] * 0.4f
+                val snapThreshold = itemHeightsPx[snapIndex] * 0.6f
 
                 if (abs(currentOffset - snapTarget) < snapThreshold) {
                     coroutineScope.launch {
@@ -123,17 +127,7 @@ fun LessonApp() {
             GlowingCircleLesson("Iván", "23:59", circleSize = 380.dp)
 
             LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
-            LessonView(lesson)
+
         }
     }
 }

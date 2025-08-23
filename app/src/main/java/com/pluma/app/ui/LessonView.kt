@@ -27,5 +27,11 @@ import com.pluma.app.ui.theme.Primary
 
 @Composable
 fun LessonView(lesson: Lesson) {
-    DefaultCardView(lesson.title, lesson.what[0].text, 5)
+    Column {
+        DefaultCardView(lesson.title, lesson.description, lesson.estimated_time)
+        WhatCardView(lesson)
+        WhyCardView(lesson)
+        HowCardView(lesson)
+        ExamplesCardView(lesson)
+    }
 }

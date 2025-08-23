@@ -7,6 +7,8 @@ import java.io.IOException
 @Serializable
 data class Lesson(
     val title: String,
+    val estimated_time: Int,
+    val description: String,
     val what: List<WhatItem>,
     val why: String,
     val how: HowSection,

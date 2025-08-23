@@ -25,25 +25,34 @@ import com.pluma.app.ui.theme.InsideCardColor
 import com.pluma.app.ui.theme.Primary
 import kotlin.random.Random
 
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.pluma.app.RalewayFamily
+import kotlin.math.min
+
 @Composable
 fun DefaultCardView(title: String, subtitle: String, time: Int){
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = CardColor
-        ),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
+    PlumaCardView {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Tiempo estimado de lectura
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -52,10 +61,11 @@ fun DefaultCardView(title: String, subtitle: String, time: Int){
                     imageVector = Icons.Default.Schedule,
                     contentDescription = "",
                     tint = Primary,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(32.dp)
                 )
                 Text(
                     text = "Estimated reading time: $time minutes",
+                    fontFamily = RalewayFamily,
                     style = MaterialTheme.typography.bodySmall,
                     color = InsideCardColor
                 )
@@ -63,6 +73,7 @@ fun DefaultCardView(title: String, subtitle: String, time: Int){
 
             Text(
                 text = title,
+                fontFamily = RalewayFamily,
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontWeight = FontWeight.Bold,
                     lineHeight = 36.sp
@@ -72,6 +83,7 @@ fun DefaultCardView(title: String, subtitle: String, time: Int){
 
             Text(
                 text = subtitle,
+                fontFamily = RalewayFamily,
                 style = MaterialTheme.typography.bodyLarge,
                 color = InsideCardColor,
                 lineHeight = 24.sp
