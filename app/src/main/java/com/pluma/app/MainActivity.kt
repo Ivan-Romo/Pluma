@@ -5,7 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.LinearProgressIndicator
+
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +30,7 @@ import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
+import com.pluma.app.ui.CardColor
 import com.pluma.app.ui.GlowingCircleLesson
 import com.pluma.app.ui.HeaderInfo
 import com.pluma.app.ui.Lesson
@@ -34,7 +38,9 @@ import com.pluma.app.ui.LessonView
 import com.pluma.app.ui.PlumaCardView
 import com.pluma.app.ui.theme.BackgroundColor
 import com.pluma.app.ui.theme.InsideCardColor
+import com.pluma.app.ui.theme.Primary
 import kotlinx.coroutines.launch
+import org.intellij.lang.annotations.JdkConstants
 import kotlin.math.abs
 
 class MainActivity : ComponentActivity() {
@@ -44,7 +50,9 @@ class MainActivity : ComponentActivity() {
             LessonApp()
         }
     }
-}@OptIn(ExperimentalMaterial3Api::class)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LessonApp() {
     val scrollState = rememberScrollState()
@@ -62,19 +70,22 @@ fun LessonApp() {
     val snapIndex = 1
     val snapTarget = itemOffsetsPx[snapIndex]
 
-    // Progreso del scroll hasta el snap del item 1
-    val progress = (scrollState.value.toFloat() / snapTarget).coerceIn(0f, 1f)
+    // Progreso del scroll hasta el snap del item 1 (para animar altura de la AppBar)
+    val snapProgress = (scrollState.value.toFloat() / snapTarget).coerceIn(0f, 1f)
 
     // Altura gradual: de 90.dp a 120.dp
-    val minHeight = 90.dp
-    val maxHeight = 120.dp
-    val topBarHeight = lerp(minHeight, maxHeight, progress)
+    val minHeight = 70.dp
+    val maxHeight = 100.dp
+    val topBarHeight = lerp(minHeight, maxHeight, snapProgress)
 
     val showTopBarDetails = scrollState.value >= snapTarget.toInt()
 
+    val overallProgress = if (scrollState.maxValue > 0) {
+        ((scrollState.value.toFloat() - snapTarget) /
+                (scrollState.maxValue.toFloat() - snapTarget))
+            .coerceIn(0f, 1f)    } else 0f
 
-
-    val lesson : Lesson = Lesson.fromAsset(LocalContext.current,"file1.json")
+    val lesson: Lesson = Lesson.fromAsset(LocalContext.current, "file1.json")
 
     // Snap connection
     val snapConnection = remember {
@@ -83,7 +94,7 @@ fun LessonApp() {
                 val currentOffset = scrollState.value.toFloat()
                 val snapThreshold = itemHeightsPx[snapIndex] * 0.6f
 
-                if (abs(currentOffset - snapTarget) < snapThreshold) {
+                if (kotlin.math.abs(currentOffset - snapTarget) < snapThreshold) {
                     coroutineScope.launch {
                         scrollState.animateScrollTo(snapTarget.toInt())
                     }
@@ -95,14 +106,29 @@ fun LessonApp() {
 
     Scaffold(
         topBar = {
+
             TopAppBar(
                 modifier = Modifier.height(topBarHeight),
                 title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Hola")
+                    Column(modifier = Modifier.fillMaxWidth()) {
+//                        Row(verticalAlignment = Alignment.CenterVertically,
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                ) {
+//                            Text("Hola")
+//                        }
                         if (showTopBarDetails) {
-                            Spacer(Modifier.width(8.dp))
-                            Text("¿Qué tal?")
+                            Spacer(Modifier.height(8.dp))
+                            Row(Modifier.fillMaxWidth().padding(start = 2.dp, end = 20.dp), Arrangement.SpaceAround) {
+                                LinearProgressIndicator(
+                                    color = Primary,
+                                    trackColor = CardColor,
+                                    progress = { overallProgress },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(4.dp)
+                                )
+                            }
                         }
                     }
                 },
@@ -110,7 +136,6 @@ fun LessonApp() {
                     containerColor = BackgroundColor,
                     titleContentColor = InsideCardColor
                 )
-
             )
         }
     ) { padding ->
@@ -122,12 +147,8 @@ fun LessonApp() {
                 .verticalScroll(scrollState)
                 .background(BackgroundColor)
         ) {
-            //HeaderInfo("Iván")
-
             GlowingCircleLesson("Iván", "23:59", circleSize = 380.dp)
-
             LessonView(lesson)
-
         }
     }
 }

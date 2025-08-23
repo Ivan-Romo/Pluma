@@ -127,8 +127,7 @@ fun GlowingCircleLesson(
                     val dy = (sin(driftT * 2 * PI + PI / 2).toFloat()) * (driftPx * 0.5f)
                     val cc = Offset(c.x + dx, c.y + dy)
 
-                    // Alpha del pico del anillo suavemente variable
-                    val ringAlpha = lerp(0.06f, 0.10f, pulse)
+                    val ringAlpha = lerp(0.1f, 0.20f, pulse)
 
                     // Pincel del halo
                     val haloBrush = Brush.radialGradient(
