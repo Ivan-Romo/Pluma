@@ -11,37 +11,29 @@ import androidx.compose.material3.LinearProgressIndicator
 
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import androidx.compose.ui.unit.sp
 import com.pluma.app.ui.CardColor
 import com.pluma.app.ui.GlowingCircleLesson
-import com.pluma.app.ui.HeaderInfo
 import com.pluma.app.ui.Lesson
 import com.pluma.app.ui.LessonView
-import com.pluma.app.ui.PlumaCardView
+import com.pluma.app.ui.ArchiveButton
 import com.pluma.app.ui.theme.BackgroundColor
 import com.pluma.app.ui.theme.InsideCardColor
 import com.pluma.app.ui.theme.Primary
 import kotlinx.coroutines.launch
-import org.intellij.lang.annotations.JdkConstants
-import kotlin.math.abs
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,8 +66,8 @@ fun LessonApp() {
     val snapProgress = (scrollState.value.toFloat() / snapTarget).coerceIn(0f, 1f)
 
     // Altura gradual: de 90.dp a 120.dp
-    val minHeight = 70.dp
-    val maxHeight = 100.dp
+    val minHeight = 100.dp
+    val maxHeight = 120.dp
     val topBarHeight = lerp(minHeight, maxHeight, snapProgress)
 
     val showTopBarDetails = scrollState.value >= snapTarget.toInt()
@@ -83,7 +75,8 @@ fun LessonApp() {
     val overallProgress = if (scrollState.maxValue > 0) {
         ((scrollState.value.toFloat() - snapTarget) /
                 (scrollState.maxValue.toFloat() - snapTarget))
-            .coerceIn(0f, 1f)    } else 0f
+            .coerceIn(0f, 1f)
+    } else 0f
 
     val lesson: Lesson = Lesson.fromAsset(LocalContext.current, "file1.json")
 
@@ -106,20 +99,30 @@ fun LessonApp() {
 
     Scaffold(
         topBar = {
-
             TopAppBar(
                 modifier = Modifier.height(topBarHeight),
                 title = {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-//                        Row(verticalAlignment = Alignment.CenterVertically,
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                ) {
-//                            Text("Hola")
-//                        }
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        Spacer(Modifier.height(20.dp))
+                        Row(
+                            Modifier.fillMaxWidth()
+                                .height(40.dp)
+                                .padding(5.dp),
+                            Arrangement.End
+                        ) {
+
+                            ArchiveButton {
+                                
+                            }
+                            Spacer(Modifier.width(25.dp))
+
+                        }
                         if (showTopBarDetails) {
-                            Spacer(Modifier.height(8.dp))
-                            Row(Modifier.fillMaxWidth().padding(start = 2.dp, end = 20.dp), Arrangement.SpaceAround) {
+                            Spacer(Modifier.height(15.dp))
+                            Row(Modifier
+                                .fillMaxWidth()
+
+                                .padding(start = 2.dp, end = 20.dp), Arrangement.SpaceAround) {
                                 LinearProgressIndicator(
                                     color = Primary,
                                     trackColor = CardColor,
